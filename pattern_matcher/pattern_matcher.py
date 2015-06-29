@@ -18,11 +18,11 @@ class RegexFactory(object):
 
         # Implode the list into a single regex pattern that will match
         # the path pattern format.
-        return ('\,').join(patterns)+"\n"
+        return '^{0}$'.format(('\,').join(patterns))
 
     def new(self, path):
         pattern = self._generate_pattern(path)
-        return re.compile(pattern, re.ASCII)
+        return re.compile(pattern, re.ASCII | re.MULTILINE)
 
 
 class Matcher(object):
