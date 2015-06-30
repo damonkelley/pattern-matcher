@@ -1,29 +1,15 @@
-import re
+from .regex import RegexFactory
+from .patterns import Patterns
 
 
-class RegexFactory(object):
-    """Generates a regex pattern."""
-    WORD_GROUP = '({0}|\*)'
-    SEP = '/'
+class Matcher(object):
+    NO_MATCH = 'NO MATCH'
 
-    def _generate_pattern(self, path):
-        """Generates a regex pattern."""
-        # Split the path up into a list using the forward slash as a
-        # delimiter.
-        words = (word for word in path.split(self.SEP) if word)
-
-        # Compose a list of regular expression groups for each word in
-        # the path.
-        patterns = (self.WORD_GROUP.format(re.escape(word)) for word in words)
-
-        # Implode the list into a single regex pattern that will match
-        # the path pattern format.
-        return '^{0}$'.format(('\,').join(patterns))
-
-    def new(self, path):
-        pattern = self._generate_pattern(path)
-        return re.compile(pattern, re.ASCII | re.MULTILINE)
-
+    def __init__(self, raw_patterns, path, re_factory=RegexFactory):
+        self.raw_patterns = raw_patterns
+        self.path = path
+        self.re = re_factory().create(self.path)
+        self.patterns = Patterns(self.re.findall(self.raw_patterns))
 
 class Matcher(object):
     def __init__(self, patterns, re_factory=RegexFactory):
