@@ -103,14 +103,13 @@ class TestPatterns(object):
         p = patterns.Patterns(test_patterns)
         assert p.has_min_wildcards() is False
 
-    def test_get_best_patterns_with_empty_list_of_input_patterns(self):
+    def test_get_best_pattern_with_empty_list_of_input_patterns(self):
         p = patterns.Patterns([])
-        matches = p.get_best_patterns()
-        assert type(matches) is list
-        assert len(matches) is 0
+        match = p.get_best_pattern()
+        assert match is None
 
     @pytest.mark.parametrize('test_patterns', test_patterns)
-    def test_get_best_patterns(self, test_patterns):
+    def test_get_best_pattern(self, test_patterns):
         p = patterns.Patterns(test_patterns)
         lowest_scoring_pattern = p.patterns[0]
-        assert p.get_best_patterns() == [lowest_scoring_pattern]
+        assert p.get_best_pattern() == lowest_scoring_pattern

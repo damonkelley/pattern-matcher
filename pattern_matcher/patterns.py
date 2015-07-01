@@ -90,14 +90,18 @@ class Patterns(object):
         """True if min_wilcards is not None."""
         return self.min_wildcards is not None
 
-    def get_best_patterns(self):
+    def get_best_pattern(self):
         # Filter the patterns to get only the Pattern objects that have the
         # least number of wildcards.
         patterns = [p for p in self.patterns if p.num_wildcards == self.min_wildcards]
 
         # If multiple Pattern objects are returned, then we need to rate the
         # matches by score and return those patterns.
-        if len(patterns) != 1:
-            return [p for p in patterns if p.score == self.min_score]
+        if len(patterns) > 1:
+            # TODO: What this list has multiple elements?
+            patterns = [p for p in patterns if p.score == self.min_score]
 
-        return patterns
+        if not patterns:
+            return None
+
+        return patterns.pop()

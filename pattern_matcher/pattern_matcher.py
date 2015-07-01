@@ -13,12 +13,12 @@ class Matcher(object):
         self.patterns = Patterns(self.re.findall(self.raw_patterns))
 
     def match(self):
-        matches = self.patterns.get_best_patterns()
+        match = self.patterns.get_best_pattern()
 
-        if len(matches) != 1:
+        if not match:
             return self.NO_MATCH
 
-        return str(matches.pop())
+        return str(match)
 
 
 class PathMatcher(object):
