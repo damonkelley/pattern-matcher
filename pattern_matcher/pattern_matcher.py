@@ -1,3 +1,4 @@
+from .io import InputManager, OutputManager
 from .regex import RegexFactory
 from .patterns import Patterns
 
@@ -26,26 +27,8 @@ class PathMatcher(object):
     def __init__(self, input, output):
         self.input = InputManager(input)
         self.output = OutputManager(output)
-        self.matcher = Matcher
 
     def match(self):
         for path in self.input.stream:
-            matcher = self.Matcher(path.strip())
-            print(matcher.match())
-        # send to stdout
-
-
-class InputManager(object):
-    """Manages the input to the matcher."""
-    pass
-
-
-class OutputManager(object):
-    """Manages the output of the matcher."""
-    pass
-
-
-if __name__ == '__main__':
-    import sys
-    main = PathMatcher(sys.stdin, sys.stdout)
-    main.match()
+            matcher = Matcher(self.input.patterns, path.strip())
+            self.output.writeln(matcher.match())
