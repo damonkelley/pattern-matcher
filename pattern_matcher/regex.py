@@ -20,6 +20,8 @@ class RegexFactory(object):
         # the path pattern format.
         return '^{0}$'.format(('\,').join(patterns))
 
-    def create(self, path):
-        pattern = self._generate_pattern(path)
+    @classmethod
+    def create(cls, path):
+        rf = cls()
+        pattern = rf._generate_pattern(path)
         return re.compile(pattern, re.ASCII | re.MULTILINE)
