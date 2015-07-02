@@ -72,6 +72,7 @@ class TestPattern(object):
 
 
 class TestPatterns(object):
+
     def test_min_wildcards_initialized_correctly(self):
         test_patterns = [('*', 'bar', '*')]
         p = patterns.Patterns(test_patterns)
