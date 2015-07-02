@@ -12,7 +12,7 @@ class Node(object):
     WILDCARD = '*'
 
     def __init__(self, value):
-        """Initial a Node instance.
+        """Initialze a Node instance.
 
         Parameters:
             value: the string form of the node.
@@ -47,8 +47,9 @@ class Pattern(object):
     win.  In the case of a tie, the score is used to break it.  A Pattern that
     has more rightmost wildcards will always have a lower score.
     """
+
     def __init__(self, nodes):
-        """Initialize the Pattern instance.
+        """Initialize a Pattern instance.
 
         Parameters:
             nodes: an iterable where each element is a string
@@ -87,13 +88,13 @@ class MultipleMatchesError(Exception):
 
 class Patterns(object):
     """A collection of patterns"""
+
     def __init__(self, patterns):
         """Initialize a Patterns instance.
 
         Parameters:
             patterns: a list/tuple of pattern tuples.
                         [('foo', 'bar'), ('*', 'bar')]
-
         """
         self.min_wildcards = None
         self.min_score = None
