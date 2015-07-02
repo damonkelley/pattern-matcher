@@ -1,5 +1,11 @@
+import logging
+import sys
+
 from .regex import RegexFactory
-from .patterns import Patterns
+from .patterns import Patterns, MultipleMatchesError
+
+
+logging.basicConfig(stream=sys.stderr, format='[%(levelname)s] %(message)s')
 
 
 class PathMatcher(object):
@@ -31,8 +37,13 @@ class PathMatcher(object):
         """
         for path in self.input.stream:
             path = path.strip()
-            match = self.find_best_match(path)
-            self.output.write(match)
+            try:
+                match = self.find_best_match(path)
+                self.output.write(match)
+
+            except MultipleMatchesError:
+                logging.error('Unable to match {0} to a single pattern. '
+                              'Multiple matches found.'.format(path))
 
     def find_best_match(self, path):
         """Find and return the single best matching pattern for a path.
