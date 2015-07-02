@@ -6,9 +6,9 @@ class PathMatcher(object):
     """Matches a Path to the Path Pattern."""
     NO_MATCH = 'NO MATCH'
 
-    def __init__(self, patterns, input, output):
+    def __init__(self, patterns, _input, output):
         self.patterns = patterns
-        self.input = input
+        self.input = _input
         self.output = output
 
     def match(self):

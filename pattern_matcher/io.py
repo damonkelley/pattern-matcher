@@ -18,28 +18,28 @@ class Input(object):
             4. Stop reading the input source, leaving off where
                the paths begin.
         """
-        input = cls(stream)
+        _input = cls(stream)
 
         patterns = ''
-        for line in input.stream:
-            is_heading = input.is_heading(line)
+        for line in _input.stream:
+            is_heading = _input.is_heading(line)
 
             # Store the heading that indicates the number of patterns.
-            if is_heading and not input.has_num_patterns():
-                input.num_patterns = int(line.strip())
+            if is_heading and not _input.has_num_patterns():
+                _input.num_patterns = int(line.strip())
 
             # Store of the heading that indicates the number of paths.  This
             # will not happen until we get the number of patterns.  We will
             # then stop reading the file since we have arrived at the paths.
-            elif is_heading and not input.has_num_paths():
-                input.num_paths = int(line.strip())
+            elif is_heading and not _input.has_num_paths():
+                _input.num_paths = int(line.strip())
                 break
 
             # If the line is not a heading, that means it is a pattern.
             else:
                 patterns = patterns + line
 
-        return patterns, input
+        return patterns, _input
 
     def is_heading(self, line):
         """True if the line is a section heading for either the patterns
