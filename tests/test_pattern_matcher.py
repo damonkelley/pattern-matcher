@@ -8,6 +8,7 @@ from pattern_matcher.io import Output, Input
 from pattern_matcher.pattern_matcher import PathMatcher
 from pattern_matcher.patterns import MultipleMatchesError
 
+
 TEST_DIR = path.dirname(path.abspath(__file__))
 TEST_DATA_DIR = path.join(TEST_DIR, 'test_data')
 
