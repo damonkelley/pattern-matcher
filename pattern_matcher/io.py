@@ -1,13 +1,13 @@
-class InputManager(object):
+class Input(object):
     """Manages the input to the matcher."""
+
     def __init__(self, stream):
         self.num_patterns = None
         self.num_paths = None
-        self.patterns = ''
         self.stream = stream
-        self.__parse()
 
-    def __parse(self):
+    @classmethod
+    def parse(cls, stream):
         """Parse the input source.
 
         This function will iterate through the file and perform the
@@ -18,23 +18,28 @@ class InputManager(object):
             4. Stop reading the input source, leaving off where
                the paths begin.
         """
-        for line in self.stream:
-            is_heading = self.is_heading(line)
+        input = cls(stream)
+
+        patterns = ''
+        for line in input.stream:
+            is_heading = input.is_heading(line)
 
             # Store the heading that indicates the number of patterns.
-            if is_heading and not self.has_num_patterns():
-                self.num_patterns = int(line.strip())
+            if is_heading and not input.has_num_patterns():
+                input.num_patterns = int(line.strip())
 
             # Store of the heading that indicates the number of paths.  This
             # will not happen until we get the number of patterns.  We will
             # then stop reading the file since we have arrived at the paths.
-            elif is_heading and not self.has_num_paths():
-                self.num_paths = int(line.strip())
+            elif is_heading and not input.has_num_paths():
+                input.num_paths = int(line.strip())
                 break
 
             # If the line is not a heading, that means it is a pattern.
             else:
-                self.patterns = self.patterns + line
+                patterns = patterns + line
+
+        return patterns, input
 
     def is_heading(self, line):
         """True if the line is a section heading for either the patterns
@@ -51,11 +56,12 @@ class InputManager(object):
         return self.num_paths is not None
 
 
-class OutputManager(object):
+class Output(object):
     """Manages the output of the matcher."""
+
     def __init__(self, stream):
         self.stream = stream
 
-    def writeln(self, text):
-        text = text.strip() + '\n'
+    def write(self, text):
+        text = '{0}\n'.format(text.strip())
         self.stream.write(text)
