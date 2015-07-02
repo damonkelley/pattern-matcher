@@ -1,8 +1,22 @@
 class Node(object):
-    """The object representation of a pattern node."""
+    """A single node from a pattern.
+
+    Here, a node is defined as one character or group characters that
+    is a member of a comma seperated pattern. For example, given the
+    pattern,
+
+        foo,*,bar
+
+    `foo` would be the first node of the pattern.
+    """
     WILDCARD = '*'
 
     def __init__(self, value):
+        """Initial a Node instance.
+
+        Parameters:
+            value: the string form of the node.
+        """
         self.value = value
 
     def is_wildcard(self):
@@ -17,7 +31,12 @@ class Node(object):
 
 
 class Pattern(object):
-    """The object representation of a pattern.
+    """A single pattern.
+
+    A pattern is a comma separated list of nodes. The string
+    representation of a pattern is:
+
+        foo,*,bar
 
     Most importantly, this objects calculates and stores the number of
     wildcards contained in the pattern, and scores the wildcards based
@@ -29,7 +48,12 @@ class Pattern(object):
     has more rightmost wildcards will always have a lower score.
     """
     def __init__(self, nodes):
-        # Score of the pattern based on the index of it's wildcards.
+        """Initialize the Pattern instance.
+
+        Parameters:
+            nodes: an iterable where each element is a string
+                   representation of a node.
+        """
         self.score = 0
         self.num_wildcards = 0
         self.nodes = [Node(node) for node in nodes]
@@ -57,8 +81,20 @@ class Pattern(object):
         return '<Pattern: \'{0}\'>'.format(str(self))
 
 
+class MultipleMatchesError(Exception):
+    pass
+
+
 class Patterns(object):
+    """A collection of patterns"""
     def __init__(self, patterns):
+        """Initialize a Patterns instance.
+
+        Parameters:
+            patterns: a list/tuple of pattern tuples.
+                        [('foo', 'bar'), ('*', 'bar')]
+
+        """
         self.min_wildcards = None
         self.min_score = None
         self.patterns = []
@@ -66,19 +102,14 @@ class Patterns(object):
 
     def __configure(self, patterns):
         for pattern in patterns:
-            # Create a new Pattern instance and add it to self.
             p = Pattern(pattern)
             self.patterns.append(p)
 
-            # If there is not yet a min_wildcard value, or if the current Pattern
-            # has a lower number of wildcards than the current min, then we
-            # want to set min_wildcards to the lower value.
+            # Determine the lowest number of wildcards.
             if not self.has_min_wildcards() or p.num_wildcards < self.min_wildcards:
                 self.min_wildcards = p.num_wildcards
 
-            # If there is not yet a min_score value, or if the current Pattern
-            # has a lower number score than the current min, then we
-            # want to set min_score to the lower value.
+            # Determine the lowest Pattern score.
             if not self.has_min_score() or p.score < self.min_score:
                 self.min_score = p.score
 
@@ -91,15 +122,26 @@ class Patterns(object):
         return self.min_wildcards is not None
 
     def get_best_pattern(self):
-        # Filter the patterns to get only the Pattern objects that have the
-        # least number of wildcards.
+        """Get the best pattern based on the number of wildcards and score.
+
+        Returns the best member Pattern instance or None
+
+        The best pattern is the Pattern object that has the lowest number
+        of wildcards.  If multiple Patterns have share the lowest number
+        of wildcards, then the tie is broken based on the lowest score.
+        """
+        # Filter out patterns that do not have the lowest number of wildcards.
         patterns = [p for p in self.patterns if p.num_wildcards == self.min_wildcards]
 
-        # If multiple Pattern objects are returned, then we need to rate the
-        # matches by score and return those patterns.
+        # If multiple patterns are returned after the initial filter, do an
+        # additional filter to get the pattern with the lowest score.
         if len(patterns) > 1:
-            # TODO: What this list has multiple elements?
             patterns = [p for p in patterns if p.score == self.min_score]
+
+        # After filtering twice, if there are still multiple patterns, raise
+        # an exception.
+        if len(patterns) > 1:
+            raise MultipleMatchesError('More than one pattern match the minimum score')
 
         if not patterns:
             return None
