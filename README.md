@@ -7,11 +7,11 @@ Python 3.x
 
 ### Usage
 
-The command will read from stdin and write matches to stdout. If it encounters an error, a message will be written to stderr.
+The script will read from stdin and write to stdout. If it encounters an error, a message will be written to stderr.
 
 There are 2 ways to run the script.
 
-#####  Option 1: Install the package and expose the `entry_point`
+#####  Option 1: Install the package and expose the `entry_point` command.
 
 ```sh
 $ python[3] setup.py install
@@ -27,12 +27,11 @@ $ cat foo.txt | ./bin/pattern-matcher > bar.txt
 
 **Note**: The script will look for the `python3` binary in the current environment.
 
-### Development
 
-##### Running the Tests
+### Running the Tests
 
 ```sh
-$ python setup.py test
+$ python[3] setup.py test
 ```
 
 
