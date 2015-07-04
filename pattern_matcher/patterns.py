@@ -87,7 +87,7 @@ class Patterns(object):
     This object is knowledgable about its member Pattern objects, and will get
     the best matching Pattern via the `get_best_pattern` method.
 
-    In order to find the best matching Pattern, the first step is to idenfify
+    In order to find the best matching Pattern, the first step is to identify
     Pattern object(s) that have the lowest number of wildcards.  The Pattern
     with the fewer number of wildcards will always win.  In the case of a
     tie, the score is used to break it.  A Pattern that has more rightmost
