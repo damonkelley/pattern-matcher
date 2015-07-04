@@ -99,9 +99,12 @@ class Patterns(object):
         self.min_wildcards = None
         self.min_score = None
         self.patterns = []
-        self.__configure(patterns)
+        self.__calculate(patterns)
 
-    def __configure(self, patterns):
+    def __calculate(self, patterns):
+        """Calculate the lowest number of wildcards and the lowest score from
+        the list of member Pattern objects.
+        """
         for pattern in patterns:
             p = Pattern(pattern)
             self.patterns.append(p)
