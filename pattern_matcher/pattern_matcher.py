@@ -11,7 +11,7 @@ logging.basicConfig(stream=sys.stderr, format='[%(levelname)s] %(message)s')
 class PathMatcher(object):
     """Matches paths to patterns.
 
-    The path is a string composed of a series of character groupings
+    A path is a string composed of a series of character groupings
     seperated by a forward slash (/) (e.g. foo/bar)
 
     A pattern is a also a string composed of a series of character groupings,

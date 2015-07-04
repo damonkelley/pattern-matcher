@@ -1,7 +1,12 @@
 class Input(object):
-    """Manages the input to the matcher."""
+    """Wrapper class for the input stream."""
 
     def __init__(self, stream):
+        """Initialize an Input instance.
+
+        Parameters:
+            stream: The file object that will be read from.
+        """
         self.num_patterns = None
         self.num_paths = None
         self.stream = stream
@@ -10,13 +15,14 @@ class Input(object):
     def parse(cls, stream):
         """Parse the input source.
 
+        Returns the raw patterns and an initialized Input instance.
+
         This function will iterate through the file and perform the
         following operations in order:
             1. Get the number of patterns.
             2. Copy the patterns to self.patterns, one by one.
             3. Get the number of paths.
-            4. Stop reading the input source, leaving off where
-               the paths begin.
+            4. Stop reading the stream where the paths begin.
         """
         _input = cls(stream)
 
@@ -28,7 +34,7 @@ class Input(object):
             if is_heading and not _input.has_num_patterns():
                 _input.num_patterns = int(line.strip())
 
-            # Store of the heading that indicates the number of paths.  This
+            # Store the heading that indicates the number of paths.  This
             # will not happen until we get the number of patterns.  We will
             # then stop reading the file since we have arrived at the paths.
             elif is_heading and not _input.has_num_paths():
@@ -57,11 +63,21 @@ class Input(object):
 
 
 class Output(object):
-    """Manages the output of the matcher."""
+    """Wrapper class for the output stream."""
 
     def __init__(self, stream):
+        """Initialize an Output instance.
+
+        Parameters:
+            stream: The file object that output it to be written to.
+        """
         self.stream = stream
 
     def write(self, text):
+        """Sanitize and write text to the stream.
+
+        Parameters:
+            text: the string to be written.
+        """
         text = '{0}\n'.format(text.strip())
         self.stream.write(text)
