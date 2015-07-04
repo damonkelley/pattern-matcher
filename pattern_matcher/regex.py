@@ -23,7 +23,7 @@ class RegexFactory(object):
         # delimiter. Filter out any empty strings.
         nodes = (node for node in path.split(self.SEP) if node)
 
-        # Compose a list of regular expression groups for each word in
+        # Compose a list of regular expression groups for each node in
         # the path.
         patterns = (self.NODE_GROUP.format(re.escape(node)) for node in nodes)
 
