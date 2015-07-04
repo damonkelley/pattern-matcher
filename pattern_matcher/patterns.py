@@ -132,8 +132,8 @@ class Patterns(object):
         Returns the best member Pattern instance or None
 
         The best pattern is the Pattern object that has the lowest number
-        of wildcards.  If multiple Patterns have share the lowest number
-        of wildcards, then the tie is broken based on the lowest score.
+        of wildcards.  If multiple Patterns share the lowest number of
+        wildcards, then the tie is broken based on the lowest score.
         """
         # Filter out patterns that do not have the lowest number of wildcards.
         patterns = [p for p in self.patterns if p.num_wildcards == self.min_wildcards]
