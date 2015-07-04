@@ -49,6 +49,9 @@ class PathMatcher(object):
         """Find and return the single best matching pattern for a path.
 
         Returns 'NO MATCH' if no pattern is found.
+
+        Parameters:
+            path: string
         """
         re = RegexFactory.create(path)
         matches = Patterns(re.findall(self.patterns))
