@@ -38,14 +38,9 @@ class Pattern(object):
 
         foo,*,bar
 
-    Most importantly, this objects calculates and stores the number of
+    Most importantly, this object calculates and stores the number of
     wildcards contained in the pattern, and scores the wildcards based
     on the position in the pattern.
-
-    When comparing Patterns, the first comparison is based on the number
-    of wildcards.  The Pattern with the fewer number of wildcards will always
-    win.  In the case of a tie, the score is used to break it.  A Pattern that
-    has more rightmost wildcards will always have a lower score.
     """
 
     def __init__(self, nodes):
@@ -87,7 +82,17 @@ class MultipleMatchesError(Exception):
 
 
 class Patterns(object):
-    """A collection of patterns"""
+    """A collection of patterns.
+
+    This object is knowledgable about its member Pattern objects, and will get
+    the best matching Pattern via the `get_best_pattern` method.
+
+    In order to find the best matching Pattern, the first step is to idenfify
+    Pattern object(s) that have the lowest number of wildcards.  The Pattern
+    with the fewer number of wildcards will always win.  In the case of a
+    tie, the score is used to break it.  A Pattern that has more rightmost
+    wildcards will always have a lower score.
+    """
 
     def __init__(self, patterns):
         """Initialize a Patterns instance.
